@@ -40,6 +40,8 @@ require  __DIR__.'/adminauth.php';
 
 Route::get('/vendor/dashboard', function () {
     return view('vendor.dashboard');
+
+    
 })->middleware(['auth:vendor', 'verified'])->name('vendor.dashboard');
 
 require  __DIR__.'/vendorauth.php';
