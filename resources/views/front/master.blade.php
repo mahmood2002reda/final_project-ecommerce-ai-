@@ -9,14 +9,14 @@
   data-assets-path="{{ asset('assets-vendor')}}/"
   data-template="vertical-menu-template-free"
 >
- @include('vendor.partials.head')
+ @include('front.partials.head')
 
   <body>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
         <!-- Menu -->
-        @include('vendor.partials.sidebar')
+        @include('front.partials.sidebar')
       
         <!-- / Menu -->
 
@@ -24,7 +24,7 @@
         <div class="layout-page">
           <!-- Navbar -->
 
-          @include('vendor.partials.navbar')
+          @include('front.partials.navbar')
 
         
 
@@ -39,7 +39,7 @@
             <!-- / Content -->
 
             <!-- Footer -->
-            @include('vendor.partials.footer')
+            @include('front.partials.footer')
           
             <!-- / Footer -->
 
@@ -59,7 +59,7 @@
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
-    @include('vendor.partials.scripts')
+    @include('front.partials.scripts')
    
   </body>
 </html>

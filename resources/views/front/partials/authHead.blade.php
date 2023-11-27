@@ -10,7 +10,7 @@
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('assets-vendor')}}/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="{{asset('assets-front')}}/img/favicon/favicon.ico" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -21,24 +21,23 @@
     />
 
     <!-- Icons. Uncomment required icon fonts -->
-    <link rel="stylesheet" href="{{ asset('assets-vendor')}}/vendor/fonts/boxicons.css" />
+    <link rel="stylesheet" href="{{asset('assets-front')}}/vendor/fonts/boxicons.css" />
 
     <!-- Core CSS -->
-    <link rel="stylesheet" href="{{ asset('assets-vendor')}}/vendor/css/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="{{ asset('assets-vendor')}}/vendor/css/theme-default.css" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="{{ asset('assets-vendor')}}/css/demo.css" />
+    <link rel="stylesheet" href="{{asset('assets-front')}}/vendor/css/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{asset('assets-front')}}/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{{asset('assets-front')}}/css/demo.css" />
 
     <!-- Vendors CSS -->
-    <link rel="stylesheet" href="{{ asset('assets-vendor')}}/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
-
-    <link rel="stylesheet" href="{{ asset('assets-vendor')}}/vendor/libs/apex-charts/apex-charts.css" />
+    <link rel="stylesheet" href="{{asset('assets-front')}}/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
     <!-- Page CSS -->
-
+    <!-- Page -->
+    <link rel="stylesheet" href="{{asset('assets-front')}}/vendor/css/pages/page-auth.css" />
     <!-- Helpers -->
-    <script src="{{ asset('assets-vendor')}}/vendor/js/helpers.js"></script>
+    <script src="{{asset('assets-front')}}/vendor/js/helpers.js"></script>
 
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="{{ asset('assets-vendor')}}/js/config.js"></script>
+    <script src="{{asset('assets-front')}}/js/config.js"></script>
   </head>
