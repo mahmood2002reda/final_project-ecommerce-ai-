@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VendorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::prefix('vendor')->name('vendor.')->group(function () {
+  
+    Route::get('/', VendorController::class)->name('index');
+
+});
 
 Route::get('/', function () {
     return view('welcome');
