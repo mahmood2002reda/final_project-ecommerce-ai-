@@ -7,7 +7,7 @@
         <title>Laravel</title>
 
         <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
+        <img src="{{ asset('images/profile/'.$profile->image_profile) }}" alt="صورة">        <link rel="preconnect" href="{{asset('http://127.0.0.1:8000/app/public/images/1701129706.jpg')}}">
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
 
         <!-- Styles -->

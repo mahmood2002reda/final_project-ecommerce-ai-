@@ -3,13 +3,33 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
-    protected $fillable = ['name', 'description', 'price', 'quantity', 'is_available', 'image'];
-
+    use HasFactory;
+    protected $fillable = [
+        'slug',
+        'name',
+        'description',
+        'price',
+        'quantity',
+        'sku',
+        'manage_stock',
+        'is_available',
+        'image',
+        'qty',
+        'in_stock',
+        'category_id',
+        'brand_id',
+        'is_active',
+    ];
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+    public function brand(){
+        return $this->belongsTo(Brand::class);
+
     }
 }

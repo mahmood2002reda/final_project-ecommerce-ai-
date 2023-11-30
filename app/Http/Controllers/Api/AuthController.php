@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
+use GuzzleHttp\Exception\ClientException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
 
@@ -82,4 +83,64 @@ class AuthController extends Controller
 
     }
     
+
+    
+    
+    // ...
+    
+    public function redirectToProvider($provider)
+    {
+        $allowedProviders = ['google', 'github', 'twitter']; // المزيد من المزودين يمكن إضافتهم هنا
+        if (!in_array($provider, $allowedProviders)) {
+            return response()->json(['error' => 'Invalid provider.'], 422);
+        }
+        
+        return Socialite::driver($provider)->stateless()->redirect();
+    }
+    
+    public function handleProviderCallback($provider)
+    {
+        $allowedProviders = ['google', 'github', 'twitter']; // المزيد من المزودين يمكن إضافتهم هنا
+        if (!in_array($provider, $allowedProviders)) {
+            return response()->json(['error' => 'Invalid provider.'], 422);
+        }
+       
+    
+        try {
+            /** @var \App\Models\User $user */
+            $user = Socialite::driver($provider)->stateless()->user();
+        } catch (ClientException $exception) {
+            return response()->json(['error' => 'Invalid credentials provider.'], 422);
+        }
+    
+        $userCreated = User::firstOrCreate(
+            [
+                'email' => $user->getEmail()
+            ],
+            [
+                'email_verified_at' => now(),
+                'name' => $user->getName(),
+                'status' => true,
+            ]
+        );
+    
+        $userCreated->providers()->updateOrCreate(
+            [
+                'provider' => $provider,
+                'provider_id' => $user->getId(),
+            ],
+            [
+                'avatar' => $user->getAvatar()
+            ]
+        );
+        $data['token'] = $userCreated->createToken('api')->plainTextToken;
+        $data['email'] = $userCreated->email;
+        $data['name'] = $userCreated->name;
+        return ApiResponse::sendResponse(200, 'Login  successfully ',$data);
+
+    
+      
+    }
+    
+   
 }

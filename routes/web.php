@@ -1,10 +1,9 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Controller;
-use App\Http\Controllers\ClothingItemController;
+use App\Models\Profile;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\VendorAuth\EmailVerificationPromptController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,10 +15,12 @@ use App\Http\Controllers\VendorAuth\EmailVerificationPromptController;
 |
 */
 
+
+
 Route::get('/', function () {
-    return view('home');
+    $profile = Profile::where('id', 2)->first();
+    return view('welcome', compact('profile'));
 });
-Route::get('email', [Controller::class, 'generateRandomEmail']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -32,14 +33,3 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
-})->middleware(['auth:admin', 'verified'])->name('admin.dashboard');
-
-require  __DIR__.'/adminauth.php';
-
-Route::get('/vendor/dashboard', function () {
-    return view('vendor.dashboard');
-})->middleware(['auth:vendor', 'verified'])->name('vendor.dashboard');
-
-require  __DIR__.'/vendorauth.php';
