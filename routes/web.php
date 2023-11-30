@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Back\BackHomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FrontController;
 use Illuminate\Support\Facades\Route;
@@ -14,21 +15,33 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::prefix('front')->name('front.')->group(function () {
+// {{-- Auth::guard('admin')->user()->name --}}
+//Route::prefix('front')->name('front.')->group(function () {
   
-    Route::get('/', FrontController::class)->middleware('auth')->name('index');
-    Route::view('/login','front.auth.login');
-     Route::view('/register','front.auth.register');
-      Route::view('/forget-password','front.auth.forget-password');
+   // Route::get('/', FrontController::class)->middleware('auth')->name('index');
+    // Route::view('/login','front.auth.login');
+    //  Route::view('/register','front.auth.register');
+    //   Route::view('/forget-password','front.auth.forget-password');
    
 
+//});
+
+
+
+
+// require __DIR__.'/auth.php';
+
+
+Route::prefix('back')->name('back.')->group(function () {
+  
+    Route::get('/', BackHomeController::class)->middleware('admin')->name('index');
+   
+    require __DIR__.'/adminAuth.php';
+ 
 });
 
+ 
 
-
-
-
-require __DIR__.'/auth.php';
 
 Route::get('/', function () {
     return view('welcome');

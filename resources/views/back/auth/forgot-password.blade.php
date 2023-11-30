@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-@section('title','vendor forget-password')
+@section('title','Admin forget-password')
 
 <html
   lang="en"
   class="light-style customizer-hide"
   dir="ltr"
   data-theme="theme-default"
-  data-assets-path="{{asset('assets-vendor')}}"
+  data-assets-path="{{asset('assets-back')}}"
   data-template="vertical-menu-template-free"
 >
-   @include('vendor.partials.authHead')
+   @include('back.partials.authHead')
  
 
   <body>
@@ -25,11 +25,14 @@
           <div class="card">
             <div class="card-body">
               <!-- Logo -->
-              @include('front.partials.authlogo')
+              @include('back.partials.authlogo')
               <!-- /Logo -->
               <h4 class="mb-2">Forgot Password? 🔒</h4>
               <p class="mb-4">Enter your email and we'll send you instructions to reset your password</p>
-              <form id="formAuthentication" class="mb-3" action="index.html" method="POST">
+              <x-auth-session-status class="mb-4" :status="session('status')" />
+           <form method="POST" action="{{ route('back.password.email') }}"  id="formAuthentication" class="mb-3">
+             @csrf
+
                 <div class="mb-3">
                   <label for="email" class="form-label">Email</label>
                   <input
@@ -38,13 +41,15 @@
                     id="email"
                     name="email"
                     placeholder="Enter your email"
+                    :value="old('email')" 
                     autofocus
                   />
+                  <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
                 <button class="btn btn-primary d-grid w-100">Send Reset Link</button>
               </form>
               <div class="text-center">
-                <a href="auth-login-basic.html" class="d-flex align-items-center justify-content-center">
+                <a href="{{route('back.login')}}" class="d-flex align-items-center justify-content-center">
                   <i class="bx bx-chevron-left scaleX-n1-rtl bx-sm"></i>
                   Back to login
                 </a>
@@ -64,7 +69,8 @@
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
-    @include('front.partials.authScripts')
+    @include('back.partials.authScripts')
     
   </body>
 </html>
+
