@@ -35,6 +35,11 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('back')->name('back.')->group(function () {
   
     Route::get('/', BackHomeController::class)->middleware('admin')->name('index');
+    Route::get('/category',[ App\Http\Controllers\Admin\CategoryController::class,'index'])->middleware('admin');
+    Route::get('/category/create',[ App\Http\Controllers\Admin\CategoryController::class,'create'])->middleware('admin');
+    Route::post('/category',[ App\Http\Controllers\Admin\CategoryController::class,'store'])->middleware('admin');
+    Route::get('/category/{category}/edit',[ App\Http\Controllers\Admin\CategoryController::class,'edit'])->middleware('admin');
+    Route::put('/category/{category}',[ App\Http\Controllers\Admin\CategoryController::class,'update'])->middleware('admin');
    
     require __DIR__.'/adminAuth.php';
  
@@ -44,7 +49,7 @@ Route::prefix('back')->name('back.')->group(function () {
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('start');
 });
 
 // Route::get('/dashboard', function () {
