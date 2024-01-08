@@ -4,16 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProductDetailsResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use CyrildeWit\EloquentViewable\Support\Period;
+
+
 
 class ProductController extends Controller
 {
-    public function category($product)
+    public function category($id)
     {
-        $category = Category::where('name', $product)->first();
+        $category = Category::where('id', $id)->first();
 
         if ($category) {
             $products = Product::where('category_id', $category->id)
@@ -67,5 +71,25 @@ class ProductController extends Controller
             return ApiResponse::sendResponse(200, 'No Products available', []);
         }
     }
-    
+
+    public function show_details(Product $product ,$id)
+{
+
+    $product = Product::with('reviews','user')->findOrFail($id);
+    $product->increment('views');
+    //$viewCount=views($product)->record();
+    return ApiResponse::sendResponse(200, 'Product Retrieved Successfully', new ProductDetailsResource($product));
+}
+
+public function show($id)
+{
+    $product = Product::findOrFail($id);
+    $viewCount = $product
+        ->views()
+        ->period(Period::since(today()))
+        ->count();
+
+    // Return the view count as a response
+    return response()->json(['view_count' => $viewCount]);
+}
 } 

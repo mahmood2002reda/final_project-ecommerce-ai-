@@ -29,6 +29,7 @@ return new class extends Migration
             $table->unsignedBigInteger('brand_id')->constrained();
             $table->foreign('brand_id')->references('id')->on('brands')->cascadeOnDelete()->cascadeOnUpdate();
             $table->boolean('is_active');
+           
             $table->timestamps();
         });
         

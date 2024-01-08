@@ -2,9 +2,13 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\Auth\ResetPasswordController;
+use App\Http\Controllers\Api\Auth\ForgetPasswordController;
+use App\Http\Controllers\Api\Auth\EmailVerificationController;
+use App\Http\Controllers\Api\ReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,16 +34,28 @@ Route::controller(AuthController::class)->group(function(){
 
 });
 
+Route::post('email-verification', [EmailVerificationController::class, 'email_verification'])->middleware('auth:sanctum');
+Route::post('email-send', [EmailVerificationController::class, 'sendEmailVerification'])->middleware('auth:sanctum');
+Route::post('password/forgot-password', [ForgetPasswordController::class, 'forgotPassword']);
+Route::post('password/reset', [ResetPasswordController::class, 'passwordReset']);
 
 Route::prefix('user')->group(function () {
 
-Route::prefix('products')->controller(ProductController::class)->group(function(){
+Route::prefix('products')->group(function(){
+    Route::get('{id}',[ProductController::class, 'show_details']);
+    Route::get('viewer/{id}',[ProductController::class, 'show']);
 
-    Route::get('/categories/{product}','category');
-    Route::get('/','index');
-    Route::get('search','search');
-
+    Route::get('/categories/{id}',[ProductController::class, 'category']);
+   
+    Route::get('search',[ProductController::class, 'search']);
+    Route::prefix('Review')->middleware('auth:sanctum')->group(function(){
+ Route::post('create/{prodctId}',[ReviewController::class, 'store']);
+ Route::post('{ReviewId}/update/{prodctId}',[ReviewController::class, 'update']);
+ Route::delete('{reviewId}/delete/{prodctId}', [ReviewController::class, 'destroy']);
 });
+});
+
+
 Route::prefix('profile')->controller(ProfileController::class)->group(function(){
 
     Route::post('create','create')->middleware('auth:sanctum');

@@ -27,7 +27,7 @@ class ProfileResource extends JsonResource
     return [
         'name' => $this->name,
         'email' => $this->email,
-        'image_profile' => url('app/public/images/' . $this->profile->image_profile),
+        'image_profile' => url('images/profile/'.$this->profile->image_profile),
         'mobile_number1' => $this->profile->mobile_number1,
         'mobile_number2' => $this->profile->mobile_number2,
         'addresses' => $addresses,

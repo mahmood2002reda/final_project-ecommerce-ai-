@@ -26,6 +26,7 @@ class ProductResource extends JsonResource
             'vendor_id'=>$this->vendor_id,
             'category name'=>$this->category->name
             
+            
         ];
     }
 }

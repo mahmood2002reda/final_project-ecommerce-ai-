@@ -12,7 +12,7 @@ use Laravel\Socialite\Facades\Socialite;
 use GuzzleHttp\Exception\ClientException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
-
+use App\Notifications\EmailVerification;
 class AuthController extends Controller
 {
     /**
@@ -43,7 +43,7 @@ class AuthController extends Controller
         $data['token'] = $user->createToken('api')->plainTextToken;
         $data['name'] = $user->name;
         $data['email'] = $user->email;
-
+$user->notify(new EmailVerification());
         return ApiResponse::sendResponse(201, 'User created successfully', $data);
     }
     
