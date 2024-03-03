@@ -171,6 +171,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Ichtrojan\Otp\OtpServiceProvider::class,
         CyrildeWit\EloquentViewable\EloquentViewableServiceProvider::class,
+        Srmklive\PayPal\Providers\PayPalServiceProvider::class,
 
     ])->toArray(),
 
