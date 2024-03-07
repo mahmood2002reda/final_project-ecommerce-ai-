@@ -35,7 +35,9 @@ class ProductDetailsResource extends JsonResource
             'price' => $this->price,
             'quantity' => $this->quantity,
             'is_available' => $this->is_available,
-            'image' => $this->image,
+            'images' => $this->product_images->map(function($image) {
+                return url('images/profile/'.$image->images);
+            }),
             'category_id' => $this->category_id,
             'vendor_id' => $this->vendor_id,
             'category_name' => $this->category->name,

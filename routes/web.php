@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    $profile = Profile::where('id', 3)->first();
+    $profile = Profile::where('id', 4)->first();
     return view('welcome', compact('profile'));
 });
 

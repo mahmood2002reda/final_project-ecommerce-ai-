@@ -7,13 +7,14 @@
     "require": {
         "php": "^8.1",
         "cyrildewit/eloquent-viewable": "^7.0",
-        "guzzlehttp/guzzle": "^7.2",
+        "guzzlehttp/guzzle": "^7.8",
         "ichtrojan/laravel-otp": "^1.4",
         "intervention/image": "^2.7",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/socialite": "^5.10",
-        "laravel/tinker": "^2.8"
+        "laravel/tinker": "^2.8",
+        "srmklive/paypal": "~1.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.13",
