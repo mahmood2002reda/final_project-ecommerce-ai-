@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use CyrildeWit\EloquentViewable\InteractsWithViews;
 use CyrildeWit\EloquentViewable\Contracts\Viewable;
+use DB;
 
 class Product extends Model implements Viewable
 {
@@ -46,7 +47,7 @@ class Product extends Model implements Viewable
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_product', 'product_id', 'user_id');
+        return $this->belongsToMany(User::class, 'user_product', 'product_id', 'user_id')->wherePivot([]);
     }
 
     public function cart()
@@ -75,6 +76,10 @@ public function productOptions()
 }
 public function myPaurchases()
 {
-    return $this->hasMany(ProductOption::class);
+    return $this->hasMany(MyPurchases::class);
+}
+public function wishlist()
+{
+    return $this->belongsTo(Whishlist::class, 'whishlist_id');
 }
 }

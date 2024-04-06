@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use Auth;
+use App\Models\User;
+use App\Models\Review;
 use App\Models\Product;
 use App\Models\Category;
 use App\Helpers\ApiResponse;
@@ -9,10 +12,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\HomeResource;
+use App\Http\Resources\ReviewResource;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\ProductDetailsResource;
-use App\Models\User;
-use Auth;
 use CyrildeWit\EloquentViewable\Support\Period;
 
 
@@ -31,25 +33,42 @@ class ProductController extends Controller
     }
 
     public function myWishlist()
-{
-    $userId = Auth::id();
-
-    $products = DB::table('user_product')
-        ->where('user_id', $userId)
-        ->join('products', 'user_product.product_id', '=', 'products.id')
-        ->select('products.*')
-        ->get();
-
-    return ApiResponse::sendResponse(200, 'Products Retrieved Successfully',$products);
-}
-
+    {
+        $userId = Auth::id();
+    
+        $products = DB::table('user_product')
+            ->where('user_id', $userId)
+            ->join('products', 'user_product.product_id', '=', 'products.id')
+            ->select('products.name', 'products.price', 'products.image', 'products.id as product_id')
+            ->get();
+    
+        $reviews = [];
+    
+        foreach ($products as $product) {
+            $reviews[$product->product_id] = Review::where('product_id', $product->product_id)->get();
+        }
+    
+        $wishlist = [];
+    
+        foreach ($products as $product) {
+            $wishlist[] = [
+                'name' => $product->name,
+                'price' => $product->price,
+                'image' => $product->image,
+                'reviews' =>ReviewResource::collection($reviews[$product->product_id]) ,
+            ];
+        }
+    
+        return response()->json([
+            'products' => $wishlist,
+        ]);
+    }
 public function mostView(){
 
-    $mostReview = DB::table('products')
-    ->orderBy('views', 'DESC')
+    $mostReview = Product::orderBy('views', 'DESC')
     ->limit(5)
     ->get();
-if(  $mostReview){
+if($mostReview){
 
      
       return ApiResponse::sendResponse(200, 'Products Retrieved Successfully', HomeResource::collection($mostReview) );
@@ -68,11 +87,11 @@ ORDER BY total_sales DESC;
 
     */   
 
-    $bestSeller = Product::select('products.*', DB::raw('COUNT(orderitems.product_id) AS total_sales'))
-    ->join('orderitems', 'products.id', '=', 'orderitems.product_id')
+    $bestSeller = Product::select('products.*', DB::raw('COUNT(my_purchases.product_id) AS total_sales'))
+    ->join('my_purchases', 'products.id', '=', 'my_purchases.product_id')
     ->groupBy('products.id')
     ->orderBy('total_sales', 'DESC')
-    ->limit(10)
+    ->limit(2)
     ->get();
     
 if($bestSeller ){
@@ -155,7 +174,7 @@ if($bestSeller ){
     public function show_details($id)
     {
         $product = Product::find($id);
-        
+      /*  
         $colors = DB::table('product_options')
             ->select('colors.color')
             ->distinct()
@@ -180,14 +199,13 @@ if($bestSeller ){
         $sizeArray = [];
         foreach ($sizes as $size) {
             $sizeArray[] = $size->size;
-        }
+        } */
     
         if ($product) {
             $product->increment('views');
             return response()->json([
-                'product' => $product,
-                'colors' => $colorArray,
-                'sizes' => $sizeArray,
+                'product' => new ProductDetailsResource($product) ,
+             
             ]);
         } else {
             return ApiResponse::sendResponse(200, 'No Product available', []);

@@ -2,154 +2,151 @@
 
 namespace App\Http\Controllers\Api;
 
-
+use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Product;
+use App\Models\User;
+use Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
+use PhpParser\Node\Scalar\MagicConst\Dir;
 
 class AiModelController extends Controller
 {
-    public function index()
-    {
-        $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://virtual-try-on2.p.rapidapi.com/clothes-virtual-tryon', [
-    'multipart' => [
-        [
-           
-            'name' => 'personImage',
-            'filename' => 'Man-PNG-Free-Download.png',
-            'contents' => fopen(__DIR__ . '/Man-PNG-Free-Download.png', 'r'),
-            'headers' => [
-                'Content-Type' => 'application/octet-stream'
-            ]
-        ],
-        [
-            'name' => 'clothImage',
-            'filename' => 'IMG-20240227-WA0003.jpg',
-            'contents' => fopen(__DIR__ . '/IMG-20240227-WA0003.jpg', 'r'),
-            'headers' => [
-                'Content-Type' => 'application/octet-stream'
-            ]
-        ]
-    ],
-    'headers' => [
-        'X-RapidAPI-Host' => 'virtual-try-on2.p.rapidapi.com',
-        'X-RapidAPI-Key' => 'af291c8a60msh1e4a89650f69c8bp1a2ca5jsn1c33536c6af1',
-    ],
-]);
+    public function index(Request $request, $id)
+{
+    $productId = $request->route('id');
+    $product = Product::find($productId);
 
-echo $response->getBody();
+    $personalImage = $request->file('personalImage');
+
+    if (!$product) {
+        return response()->json(['message' => 'Product not found'], 404);
     }
+
+    if (!$personalImage) {
+        return response()->json(['error' => 'Personal image not provided'], 400);
+    }
+
+    $productImagePath = public_path('images/product/' . $product->image);
+
+    // Save the personal image to a temporary location
+    $personalImage->move(public_path('images/temp'), $personalImage->getClientOriginalName());
+    $personImagePath = public_path('images/temp/' . $personalImage->getClientOriginalName());
+
+    $client = new Client();
+
+    try {
+        $response = $client->request('POST', 'https://virtual-try-on2.p.rapidapi.com/clothes-virtual-tryon', [
+            'multipart' => [
+                [
+                    'name' => 'personImage',
+                    'contents' => fopen($personImagePath, 'r'),
+                    'filename' => $personalImage->getClientOriginalName(),
+                ],
+                [
+                    'name' => 'clothImage',
+                    'contents' => fopen($productImagePath, 'r'),
+                    'filename' => $product->image,
+                ]
+            ],
+            'headers' => [
+                'X-RapidAPI-Host' => 'virtual-try-on2.p.rapidapi.com',
+                'X-RapidAPI-Key' => 'c5a14fac7fmsha88d8a3d5711c4dp16a47ajsn195bc9cb5bdc',
+            ],
+        ]);
+
+        // Remove the temporary personal image file
+        fclose(fopen($personImagePath, 'r'));
+        unlink($personImagePath);
+
+        return response()->json(json_decode($response->getBody(), true));
+    } catch (\Exception $e) {
+        // Remove the temporary personal image file in case of an error
+        fclose(fopen($personImagePath, 'r'));
+        unlink($personImagePath);
+
+        return response()->json(['error' => 'Request failed: ' . $e->getMessage()], 500);
+    }
+}
 
 
    
  
 
-public function test()
+public function processHD(Request $request)
 {
-    // Get the image file from the URL
-    $imageFile = file_get_contents('https://raw.githubusercontent.com/gradio-app/gradio/main/test/test_files/bus.png');
-    
-    // Save the image file to local storage
-    $filename = 'bus.png';
-    Storage::put($filename, $imageFile);
-    
-    // Create a GuzzleHttp client
-    $client = new Client([
-        'verify' => 'c:/wamp64/bin/php/php8.1.0/cacert.pem', // Update this path to where you saved the cacert.pem file
-    ]);
-    
-    // Send the POST request to the analysis endpoint
-    $response = $client->request('POST', 'https://ootd.ibot.cn/process_dc', [
-        'multipart' => [
-            [
-                'name' => 'model',
-                'contents' => fopen(storage_path('app/' . $filename), 'r'),
-                'filename' => $filename
-            ],
-            [
-                'name' => 'garment',
-                'contents' => fopen(storage_path('app/' . $filename), 'r'),
-                'filename' => $filename
-            ],
-            [
-                'name' => 'images',
-                'contents' => '1'
-            ],
-            [
-                'name' => 'steps',
-                'contents' => '20'
-            ],
-            [
-                'name' => 'guidance_scale',
-                'contents' => '1'
-            ],
-            [
-                'name' => 'seed',
-                'contents' => '-1'
-            ],
-        ]
-    ]);
+    $this->httpClient = new Client(['verify' => false]);
+    $imageUrl = 'https://raw.githubusercontent.com/gradio-app/gradio/main/test/test_files/bus.png';
 
-    // Get the analysis result from the response
-    $result = $response->getBody()->getContents();
-    
-    // Display the analysis result
-    echo $result;
-}
+    // Adjust the API endpoint as necessary based on the documentation
+    $apiEndpoint = 'https://levihsu-ootdiffusion.hf.space/--replicas/e0nbp/'; // Example adjustment
 
+    try {
+        // Perform image analysis
+        $imageAnalysis = "The image appears to be a red bus with a smiley face drawn on it. The bus is likely a part of a promotional or marketing campaign, as it features a cheerful design. The image does not provide any information about the bus's route or destination, but it is clear that the bus is the main focus of the image.";
 
+        // Make API request to the correct endpoint
+        $response = $this->httpClient->get($apiEndpoint, [
+            'multipart' => [
+                [
+                    'name' => 'image1',
+                    'contents' => fopen($imageUrl, 'r'),
+                    'filename' => basename($imageUrl),
+                ],
+                // Include other parameters as required by the API
+            ],
+        ]);
 
-public function processHd()
-{
-    
-    // إجراء طلب POST مع تجاوز مشكلة شهادة SSL
-    $response = Http::withOptions([
-        'verify' => 'c:\\wamp64\\bin\\php\\php8.1.0\\cacert.pem' // تحديد موقع ملف cacert.pem
-    ])->post('https://ootd.ibot.cn/', [
-        'model' => fopen(__DIR__ . '/Man-PNG-Free-Download.png', 'r'),
-        'garment' =>fopen(__DIR__ . '/IMG-20240227-WA0003.jpg', 'r'),
-        'images' => 1,
-        'steps' => 20,
-        'guidance_scale' => 1,
-        'seed' => -1,
-    ]);
-
-    // معالجة الاستجابة
-    if ($response->successful()) {
-        $result = $response->json();
-        print_r($result);
-    } else {
-        // معالجة الخطأ
-        echo "Error: " . $response->body();
+        return response()->json([
+            'image_analysis' => $imageAnalysis,
+            'api_response' => json_decode($response->getBody()->getContents(), true),
+        ]);
+    } catch (Exception $e) {
+        // Handle the error and provide an appropriate response
+        return response()->json(['error' => $e->getMessage()], 500);
     }
 }
 
-
-public function processDc()
+private function downloadImage($url)
 {
-    $response = Http::post('https://ootd.ibot.cn/process_dc', [
-        'model' => __DIR__ . '/Man-PNG-Free-Download.png', 'r',
-        'garment' =>__DIR__ . '/IMG-20240227-WA0003.jpg', 'r',
-        'garment_category' => 'Upper-body', // Ensure this matches the expected values ('Upper-body', 'Lower-body', 'Dress')
-        'images' => 1,
-        'steps' => 20,
-        'guidance_scale' => 1,
-        'seed' => -1,
-    ]);
+    $contents = file_get_contents($url);
+    $name = basename($url);
+    $path = sys_get_temp_dir() . '/' . $name;
+    file_put_contents($path, $contents);
 
-    if ($response->successful()) {
-        $result = $response->json();
-        print_r($result);
-    } else {
-        // Handle error
-        echo "Error: " . $response->body();
-    }
+    return $path;
 }
 
+public function processDc(Request $request)
+{
+    $apiEndpoint = "https://levihsu-ootdiffusion.hf.space/--replicas/e0nbp/process_dc"; 
+    
+    $client = new Client();
 
+    try {
+        $response = $client->get($apiEndpoint, [
+            'json' => [
+                'model' => 'https://raw.githubusercontent.com/gradio-app/gradio/main/test/test_files/bus.png',
+                'garment' => 'https://raw.githubusercontent.com/gradio-app/gradio/main/test/test_files/bus.png',
+                'garment_category' => "Upper-body",
+                'images' => 1,
+                'steps' => 20,
+                'guidance_scale' => 1,
+                'seed' => -1,
+            ]
+        ]);
+
+        // Decode the JSON response
+        $result = json_decode($response->getBody(), true);
+        return response()->json($result);
+    } catch (\Exception $e) {
+        // Handle any errors
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
     }
 

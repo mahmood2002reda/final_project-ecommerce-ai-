@@ -28,9 +28,9 @@ use App\Http\Controllers\Api\CheckoutController;
 
 Route::get('processHD', [AiModelController::class, 'processDc']);
 
-Route::get('payment', [PayPalController::class, 'payment'])->middleware();
-Route::get('cancel', [PayPalController::class, 'cancel'])->middleware();
-Route::get('payment/success', [PayPalController::class, 'success'])->middleware();
+Route::get('payment', [PayPalController::class, 'payment'])->middleware('auth:sanctum');
+Route::get('cancel', [PayPalController::class, 'cancel'])->middleware('auth:sanctum');
+Route::get('payment/success', [PayPalController::class, 'success'])->middleware('auth:sanctum');
 ;
 Route::post('addToCart/{id}', [cartController::class, 'addToCart'])->middleware('auth:sanctum');
 Route::post('cartUpdatequantity/{cartId}/{scope}', [cartController::class, 'cartItemDelet'])->middleware('auth:sanctum');

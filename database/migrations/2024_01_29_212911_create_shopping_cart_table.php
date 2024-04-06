@@ -20,7 +20,11 @@ return new class extends Migration
             $table->foreign('product_id')->references('id')->on('products')->cascadeOnDelete()->cascadeOnUpdate();
 $table->integer('product_qty');
             $table->timestamps();
+            $table->decimal('extra_price', 12, 2)->default(0.00); 
+            $table->string('product_size', 190);
+            $table->string('product_color', 190);
         });
+        
     }
 
     /**

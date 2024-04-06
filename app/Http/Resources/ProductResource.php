@@ -23,7 +23,7 @@ class ProductResource extends JsonResource
             'is_available'=>$this->is_available,
             'image'=>url('images/profile/'.$this->image),
             'category_id'=>$this->category_id,
-            'vendor_id'=>$this->vendor_id,
+           // 'vendor_id'=>$this->vendor_id,
             'category name'=>$this->category->name
             
             

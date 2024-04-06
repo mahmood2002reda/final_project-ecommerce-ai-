@@ -33,7 +33,7 @@ class HomeResource extends JsonResource
            
              
              'images' => $this->product_images->map(function($image) {
-                 return url('images/profile/'.$image->images);
+                 return url('images/image/'.$image->images);
              }),
            
          'views'=>$this->views ,
