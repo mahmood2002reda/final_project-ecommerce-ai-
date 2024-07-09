@@ -5,7 +5,7 @@
 
 
 <div class="container-xxl flex-grow-1 container-p-y">
-             
+
            <div class="row">
                  <div class="col-md-12">
 
@@ -15,10 +15,10 @@
 
                               <h4>Add Category
 
-                                <a href="{{url('back/category')}}" class="btn btn-primary text-white float-end">Back</a>
+                                <a href="{{url('back/category')}}" class="btn btn-danger text-white float-end">Back</a>
 
                               </h4>
-                           
+
 
 
                        </div>
@@ -27,7 +27,7 @@
 
 
                                <form action="{{url('back/category')}}" method="post" enctype="multipart/form-data">
-                                       
+
                                        @csrf
                                          <div class="row">
                                                  <div class="col-md-6 mb-3">
@@ -117,21 +117,21 @@
 
 
            </div>
-                 
-                
-              
-             
+
+
+
+
                 <!-- Order Statistics -->
-       
-            
+
+
                 <!--/ Order Statistics -->
 
                 <!-- Expense Overview -->
-             
+
                 <!--/ Expense Overview -->
 
                 <!-- Transactions -->
-              
+
                 <!--/ Transactions -->
               </div>
 

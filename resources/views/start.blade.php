@@ -36,13 +36,13 @@
 
                     <div style="border-radius: 15px;" class="col-lg-8 col-md-8 bg-white">
                         <div class="login-fancy pb-40 clearfix">
-                            <h3 style="font-family: 'Cairo', sans-serif" class="mb-30">حدد طريقة الدخول</h3>
+                            {{-- <h3 style="font-family: 'Cairo', sans-serif" class="mb-30">حدد طريقة الدخول</h3> --}}
                             <div class="form-inline"  style="justify-content: center;">
-                           
+
                                 <a class="btn btn-default col-lg-3" title="Admin" href="{{route('back.index')}}">
                                     <img alt="user-img" width="100px;" src="{{URL::asset('assets/images/admin.png')}}">
                                 </a>
-                               
+
                             </div>
 
                         </div>

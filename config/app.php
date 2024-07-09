@@ -167,8 +167,10 @@ return [
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        App\Providers\Filament\VendorPanelProvider::class,
         App\Providers\RouteServiceProvider::class,
         Livewire\LivewireServiceProvider::class,
+        Ichtrojan\Otp\OtpServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -184,6 +186,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        'Otp' => Ichtrojan\Otp\Otp::class,
+
     ])->toArray(),
 
 ];

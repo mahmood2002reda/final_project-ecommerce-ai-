@@ -5,7 +5,7 @@
 
 
 <div class="container-xxl flex-grow-1 container-p-y">
-             
+
            <div class="row">
                  <div class="col-md-12">
 
@@ -15,10 +15,10 @@
 
                               <h4>Edit Category
 
-                                <a href="{{url('back/category')}}" class="btn btn-primary text-white float-end">Back</a>
+                                <a href="{{url('back/category')}}" class="btn btn-danger text-white float-end">Back</a>
 
                               </h4>
-                           
+
 
 
                        </div>
@@ -27,7 +27,7 @@
 
 
                                <form action="{{url('back/category/'.$category->id)}}" method="post" enctype="multipart/form-data">
-                                       
+
                                        @csrf
                                        @method('PUT')
                                          <div class="row">
@@ -58,7 +58,11 @@
                                                   <label for="">Image</label>
                                                    <input type="file" name="image" class="form-control"/>
                                                    <br>
-                                                   <img src="{{asset('/uploads/category/'.$category->image)}}"  width="60px" height="60px"   alt="">
+                                                   @if ($category->image)
+                                                   <img src="{{asset('/uploads/category/'.$category->image)}}"  width="70px" height="70px"   alt="">
+                                               @else
+                                                   <img src="{{ asset('uploads/slider/image-not-found.png') }}" style="width: 70px; height: 70px;" alt="Image Not Found">
+                                               @endif
                                                    @error('image') <small class="text-danger">{{$message}}</small>  @enderror
                                                </div>
 
@@ -101,7 +105,12 @@
 
                                </form>
 
-
+                               @if(isset($category))
+                               <div class="mt-3">
+                                   <a href="{{ route('back.subcategory.create', ['category' => $category->id]) }}"
+                                       class="btn btn-primary btn-sm">Create Subcategory</a>
+                               </div>
+                               @endif
 
 
 
@@ -120,21 +129,21 @@
 
 
            </div>
-                 
-                
-              
-             
+
+
+
+
                 <!-- Order Statistics -->
-       
-            
+
+
                 <!--/ Order Statistics -->
 
                 <!-- Expense Overview -->
-             
+
                 <!--/ Expense Overview -->
 
                 <!-- Transactions -->
-              
+
                 <!--/ Transactions -->
               </div>
 

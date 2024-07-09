@@ -35,10 +35,28 @@ return [
             'root' => storage_path('app'),
             'throw' => false,
         ],
+'temp_files' => [
+        'driver' => 'local',
+        'root' => 'C:/Users/mahmo/AppData/Local/Temp/gradio',
+    ],
 
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+        'pfrofile' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/images/profile/'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+        'product' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/images/product/'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,

@@ -10,7 +10,7 @@
   data-template="vertical-menu-template-free"
 >
    @include('back.partials.authHead')
- 
+
 
   <body>
     <!-- Content -->
@@ -24,10 +24,10 @@
               <!-- Logo -->
               @include('back.partials.authlogo')
 
-            
+
               <!-- /Logo -->
-              <h4 class="mb-2">Welcome to Sneat! 👋</h4>
-              <p class="mb-4">Please sign-in to your account and start the adventure</p>
+              {{-- <h4 class="mb-2">Welcome to Sneat! 👋</h4>
+              <p class="mb-4">Please sign-in to your account and start the adventure</p> --}}
               <x-auth-session-status class="mb-4" :status="session('status')" />
               <form id="formAuthentication" class="mb-3" action="{{ route('back.login') }}" method="POST">
                 @csrf
@@ -39,7 +39,7 @@
                     id="email"
                     name="email"
                     placeholder="Enter your email "
-                    :value="old('email')" 
+                    :value="old('email')"
                     autofocus
                   />
                   <x-input-error :messages="$errors->get('email')" class="mt-2" />
@@ -75,12 +75,12 @@
                 </div>
               </form>
 
-              <p class="text-center">
+              {{-- <p class="text-center">
                 <span>New on our platform?</span>
                 <a href="{{route('back.register')}}">
                   <span>Create an account</span>
                 </a>
-              </p>
+              </p> --}}
             </div>
           </div>
           <!-- /Register -->
@@ -90,11 +90,11 @@
 
     <!-- / Content -->
 
-  
+
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
     @include('back.partials.authScripts')
-    
+
   </body>
 </html>

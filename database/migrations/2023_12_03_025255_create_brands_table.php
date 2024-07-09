@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('brands', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->unsignedBigInteger('vendor_id');
+            $table->string('slug');
+            $table->tinyInteger('active')->default('0');
+            $table->foreign('vendor_id')->references('id')->on('vendors')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

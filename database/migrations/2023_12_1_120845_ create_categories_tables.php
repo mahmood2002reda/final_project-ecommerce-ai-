@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('meta_title');
             $table->string('meta_keyword');
-            $table->mediumText('meta_description'); 
+            $table->mediumText('meta_description');
             $table->tinyInteger('active')->default('1')->comment('1=visible,0=hidden');
             $table->timestamps();
         });

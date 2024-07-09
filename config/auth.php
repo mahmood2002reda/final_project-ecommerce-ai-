@@ -35,7 +35,7 @@ return [
     |
     */
 
-   
+
 
     'guards' => [
         'web' => [
@@ -46,6 +46,10 @@ return [
         'admin' => [
             'driver' => 'session',
             'provider' => 'admins',
+        ],
+        'vendor' => [
+            'driver' => 'session',
+            'provider' => 'vendors',
         ],
     ],
 
@@ -75,6 +79,10 @@ return [
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
+        ],
+        'vendors' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Vendor::class,
         ],
 
         // 'users' => [
@@ -112,6 +120,12 @@ return [
 
         'admins' => [
             'provider' => 'admins',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'vendors' => [
+            'provider' => 'vendors',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,

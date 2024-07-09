@@ -22,7 +22,7 @@ class CategoryFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            
+
 
                 'name'=>[
 
@@ -35,7 +35,8 @@ class CategoryFormRequest extends FormRequest
                 'slug'=>[
 
                     'required',
-                    'string'
+                    'string',
+
 
 
               ],
@@ -43,7 +44,7 @@ class CategoryFormRequest extends FormRequest
               'description'=>[
 
                 'required',
-               
+
                ],
 
                'image'=>[
@@ -54,7 +55,7 @@ class CategoryFormRequest extends FormRequest
 
               ],
 
-              
+
               'meta_title'=>[
 
                 'required',
@@ -63,7 +64,7 @@ class CategoryFormRequest extends FormRequest
 
              ],
 
-             
+
              'meta_keyword'=>[
 
                 'required',
@@ -73,7 +74,7 @@ class CategoryFormRequest extends FormRequest
           ],
 
 
-          
+
           'meta_description'=>[
 
             'required',
